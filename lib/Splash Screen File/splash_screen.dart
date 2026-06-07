@@ -129,7 +129,7 @@ class _SplashScreenState extends State<SplashScreen> {
               decoration: BoxDecoration(
                 color: Color(0xff1E3A8A),
                 border: Border(
-                  right: BorderSide(color: Colors.white10, width: 1),
+                  right: BorderSide(color: Colors.white10, width:1),
                 ),
               ),
             ),
