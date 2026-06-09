@@ -105,7 +105,6 @@ class _OnboardingState extends State<Onboarding> {
                     ),
                   ),
                 ),
-                /*
                 Padding(
                   padding: const EdgeInsets.all(20.0),
                   child: Row(
@@ -141,7 +140,6 @@ class _OnboardingState extends State<Onboarding> {
                     ],
                   ),
                 ),
-                */
               ],
             ),
           ),
