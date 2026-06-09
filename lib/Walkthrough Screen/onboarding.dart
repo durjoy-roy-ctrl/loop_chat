@@ -10,7 +10,6 @@ class Onboarding extends StatefulWidget {
 class _OnboardingState extends State<Onboarding> {
   final PageController _pageController = PageController();
   int currentPage = 0;
-/*
   final List<Map<String, String>> data = [
     {
       "title": "Welcome to Loop Chat",
@@ -32,7 +31,6 @@ class _OnboardingState extends State<Onboarding> {
   void skipPage() {
     setState(() {});
   }
-*/
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
