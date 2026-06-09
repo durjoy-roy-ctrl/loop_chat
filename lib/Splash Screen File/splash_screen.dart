@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:loop_chat/Walkthrough Screen/onboarding.dart';
 import 'dart:async';
 
 class SplashScreen extends StatefulWidget {
@@ -43,7 +44,8 @@ class _SplashScreenState extends State<SplashScreen> {
 
     Future.delayed(const Duration(seconds: 6), () {
       setState(() {
-        Navigator.pushReplacementNamed(context, 'Login');
+        Navigator.pushReplacement(context,MaterialPageRoute(
+          builder: (context)=>const Onboarding()));
       });
     });
   }
