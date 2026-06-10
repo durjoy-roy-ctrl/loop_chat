@@ -29,7 +29,6 @@ class _LoginPageState extends State<LoginPage> {
           body: SingleChildScrollView(
             child: Column(
               children: [
-                /*
                 Container(
                   width: double.infinity,
                   height: MediaQuery.of(context).size.height * 0.35,
@@ -67,7 +66,6 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   ),
                 ),
-                */
                 /*
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 30.0, vertical: 40.0),
