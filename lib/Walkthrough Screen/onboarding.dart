@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:loop_chat/Login%20Screen/login_page.dart';
 
 class Onboarding extends StatefulWidget {
   const Onboarding({super.key});
@@ -23,14 +24,21 @@ class _OnboardingState extends State<Onboarding> {
     },
     {
       "title": "Stay Connected",
-      "desc": "Never miss a moment with smart notifications and offline support.",
+      "desc":
+          "Never miss a moment with smart notifications and offline support.",
       "image": "images/Connected.png",
     },
   ];
 
   void skipPage() {
-    setState(() {});
+    setState(() {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => const LoginPage()),
+      );
+    });
   }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -112,7 +120,7 @@ class _OnboardingState extends State<Onboarding> {
                     children: [
                       ElevatedButton(
                         onPressed: () {
-                          if (currentPage == data.length-1) {
+                          if (currentPage == data.length - 1) {
                             skipPage();
                           } else {
                             _pageController.nextPage(
@@ -123,13 +131,18 @@ class _OnboardingState extends State<Onboarding> {
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.white,
-                          padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 12),
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 25,
+                            vertical: 12,
+                          ),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(15),
                           ),
                         ),
                         child: Text(
-                          currentPage == data.length-1 ? 'Get Started' : 'Next',
+                          currentPage == data.length - 1
+                              ? 'Get Started'
+                              : 'Next',
                           style: const TextStyle(
                             color: Colors.indigo,
                             fontSize: 16,
