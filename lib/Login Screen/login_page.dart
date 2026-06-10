@@ -66,7 +66,6 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   ),
                 ),
-                /*
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 30.0, vertical: 40.0),
                   child: Column(
@@ -149,6 +148,7 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                         ),
                       ),
+                      /*
                       const SizedBox(height: 10),
                       Align(
                         alignment: Alignment.centerRight,
@@ -202,10 +202,10 @@ class _LoginPageState extends State<LoginPage> {
                           ))
                     ]
                       ),
+                      */
                     ],
                   ),
                 ),
-                */
               ],
             ),
           ),
