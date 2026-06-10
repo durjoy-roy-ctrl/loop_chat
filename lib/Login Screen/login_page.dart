@@ -67,7 +67,10 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 ),
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 30.0, vertical: 40.0),
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 30.0,
+                    vertical: 40.0,
+                  ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -148,7 +151,6 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                         ),
                       ),
-                      /*
                       const SizedBox(height: 10),
                       Align(
                         alignment: Alignment.centerRight,
@@ -189,20 +191,22 @@ class _LoginPageState extends State<LoginPage> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                      Text( "Don't have an account? ",
-                        style: TextStyle(color: Colors.grey[600]),
-                      ),
-                      TextButton(
-                          onPressed: (){},
-                          child: Text("Sign Up",
-                            style: TextStyle(
-                              color: Color(0xFF1E3A8A),
-                              fontWeight: FontWeight.bold,
+                          Text(
+                            "Don't have an account? ",
+                            style: TextStyle(color: Colors.grey[600]),
+                          ),
+                          TextButton(
+                            onPressed: () {},
+                            child: Text(
+                              "Sign Up",
+                              style: TextStyle(
+                                color: Color(0xFF1E3A8A),
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
-                          ))
-                    ]
+                          ),
+                        ],
                       ),
-                      */
                     ],
                   ),
                 ),
