@@ -66,7 +66,6 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 ),
               ),
-              /*
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 30.0, vertical: 40.0),
                 child: Column(
@@ -156,6 +155,7 @@ class _LoginPageState extends State<LoginPage> {
                       alignment: Alignment.centerRight,
                       child: TextButton(
                         onPressed: () {
+                          /*
                           showModalBottomSheet(
                             context: context,
                             isScrollControlled: true,
@@ -163,7 +163,7 @@ class _LoginPageState extends State<LoginPage> {
                             builder: (context) {
                               return const ForgotPasswordPage();
                             },
-                          );
+                          );*/
                         },
                         child: Text(
                           "Forgot Password?",
@@ -226,7 +226,6 @@ class _LoginPageState extends State<LoginPage> {
                   ],
                 ),
               ),
-              */
             ],
           ),
         ),
