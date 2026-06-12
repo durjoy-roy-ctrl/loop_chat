@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:loop_chat/Login Screen/forgot_password_page.dart';
 import 'package:loop_chat/Login Screen/signup_page.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
-
   @override
   State<LoginPage> createState() => _LoginPageState();
 }
@@ -13,6 +13,44 @@ class _LoginPageState extends State<LoginPage> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   bool security = true;
+
+  Future<void> _loginUser() async {
+    if (_emailController.text.trim().isEmpty || _passwordController.text.trim().isEmpty) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Please enter both email and password")),
+      );
+      return;
+    }
+
+    try {
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: _emailController.text.trim(),
+        password: _passwordController.text.trim(),
+      );
+
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Login successful!")),
+      );
+
+    } on FirebaseAuthException catch (e) {
+      String errorMessage = "Incorrect email or password.";
+      if (e.code == 'user-not-found') {
+        errorMessage = 'No user found with this email.';
+      } else if (e.code == 'wrong-password') {
+        errorMessage = 'Wrong password provided.';
+      } else if (e.code == 'invalid-email') {
+        errorMessage = 'The email address format is invalid.';
+      }
+
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(errorMessage)),
+      );
+    }
+  }
+
 
   @override
   void dispose() {
@@ -43,7 +81,7 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 ),
                 child: Padding(
-                  padding: EdgeInsetsGeometry.all(30),
+                  padding: EdgeInsets.all(30),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -184,7 +222,7 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                       ),
                       child: TextButton(
-                        onPressed: () {},
+                        onPressed: _loginUser,
                         child: const Text(
                           "Sign In",
                           style: TextStyle(
@@ -232,3 +270,5 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 }
+
+
