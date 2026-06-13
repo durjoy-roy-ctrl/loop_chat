@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:loop_chat/Login Screen/forgot_password_page.dart';
 import 'package:loop_chat/Login Screen/signup_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:loop_chat/Main%20Navigation%20Page/main_navigation_page.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -15,7 +16,8 @@ class _LoginPageState extends State<LoginPage> {
   bool security = true;
 
   Future<void> _loginUser() async {
-    if (_emailController.text.trim().isEmpty || _passwordController.text.trim().isEmpty) {
+    if (_emailController.text.trim().isEmpty ||
+        _passwordController.text.trim().isEmpty) {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text("Please enter both email and password")),
@@ -30,10 +32,13 @@ class _LoginPageState extends State<LoginPage> {
       );
 
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Login successful!")),
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text("Login successful!")));
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => const MainNavigationPage()),
       );
-
     } on FirebaseAuthException catch (e) {
       String errorMessage = "Incorrect email or password.";
       if (e.code == 'user-not-found') {
@@ -45,12 +50,11 @@ class _LoginPageState extends State<LoginPage> {
       }
 
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(errorMessage)),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(errorMessage)));
     }
   }
-
 
   @override
   void dispose() {
@@ -164,7 +168,7 @@ class _LoginPageState extends State<LoginPage> {
                         suffixIcon: IconButton(
                           onPressed: () {
                             setState(() {
-                              security =! security;
+                              security = !security;
                             });
                           },
                           icon: Icon(
@@ -270,5 +274,3 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 }
-
-
