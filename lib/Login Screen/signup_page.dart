@@ -14,7 +14,7 @@ class _SignupPageState extends State<SignupPage> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   bool _security = true;
-/*
+
   Future<void> _registerUser() async {
     if (_emailController.text.trim().isEmpty || _passwordController.text.trim().isEmpty) {
       if(!mounted) return;
@@ -51,7 +51,6 @@ class _SignupPageState extends State<SignupPage> {
     }
   }
 
- */
 
   @override
   void dispose() {
@@ -247,7 +246,7 @@ class _SignupPageState extends State<SignupPage> {
                         ),
                       ),
                       child: TextButton(
-                        onPressed: (){},//_registerUser,
+                        onPressed: _registerUser,
                         child: const Text(
                           "Sign Up",
                           style: TextStyle(
