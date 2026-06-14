@@ -199,7 +199,6 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                             colors: [Color(0xFF1E3A8A), Color(0xFF3B82F6)],
                           ),
                         ),
-                        /*
                         child: TextButton(
                           onPressed: () async {
                             String email = _emailController.text.trim();
@@ -265,7 +264,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                               color: Colors.white,
                             ),
                           ),
-                        ),*/
+                        ),
                       ),
                     ],
                   ),
