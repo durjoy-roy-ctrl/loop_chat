@@ -12,15 +12,20 @@ class MainNavigationPage extends StatefulWidget {
 }
 
 class _MainNavigationPageState extends State<MainNavigationPage> {
+  int idx = 0;
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
+      initialIndex: idx,
       length: 4,
       child: SafeArea(
           child: Scaffold(
             bottomNavigationBar: TabBar(
               labelColor: Colors.blue,
               unselectedLabelColor: Colors.grey,
+              onTap: (index){
+                idx = index;
+              },
               tabs: [
                 Tab(icon: Icon(Icons.chat_bubble_outline),text: "Chats",),
                 Tab(icon: Icon(Icons.people_outline),text: "Friends",),
