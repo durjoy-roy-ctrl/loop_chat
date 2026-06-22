@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:loop_chat/Login%20Screen/login_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class SignupPage extends StatefulWidget {
   const SignupPage({super.key});
@@ -25,11 +26,31 @@ class _SignupPageState extends State<SignupPage> {
     }
 
     try {
-      await FirebaseAuth.instance.createUserWithEmailAndPassword(
+      // ২. অথেন্টিকেশনে ইউজার তৈরি হচ্ছে
+      UserCredential userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
         email: _emailController.text.trim(),
         password: _passwordController.text.trim(),
       );
 
+      String? uid = userCredential.user?.uid;
+
+      if (uid != null) {
+        // 🚀 ৩. এখানে ফায়ারস্টোরে ডাটা অ্যাড করার লজিক বসানো হয়েছে
+        String userName = _nameController.text.trim().isEmpty ? "No Name" : _nameController.text.trim();
+
+        // ইমেইল থেকে প্রথম অংশ নিয়ে একটা ডামি ইউজারনেম তৈরি করা হচ্ছে (যেমন: royb93644)
+        String fallbackUsername = _emailController.text.trim().split('@')[0];
+
+        await FirebaseFirestore.instance.collection('users').doc(uid).set({
+          'uid': uid,
+          'name': userName,
+          'username': '@$fallbackUsername', // ইউজারনেম ফিল্ড
+          'avatar': userName.isNotEmpty ? userName[0].toUpperCase() : "U", // নামের প্রথম অক্ষর অ্যাভাটার
+          'createdAt': FieldValue.serverTimestamp(),
+        });
+      }
+
+      if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text("Account created successfully! Please sign in.")),
       );
@@ -45,6 +66,7 @@ class _SignupPageState extends State<SignupPage> {
         errorMessage = 'The email address format is invalid.';
       }
 
+      if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text(errorMessage)),
       );
