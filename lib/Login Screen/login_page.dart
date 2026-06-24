@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:loop_chat/Login Screen/forgot_password_page.dart';
 import 'package:loop_chat/Login Screen/signup_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:loop_chat/Main%20Navigation%20Page/main_navigation_page.dart';
-import 'package:cloud_firestore/cloud_firestore.dart'; // 👈 ফায়ারস্টোর ইমপোর্ট করা হয়েছে
+// MainNavigationPage-এ যাওয়ার জন্য ইম্পোর্ট যুক্ত করা হলো
+import 'package:loop_chat/Main Navigation Page/main_navigation_page.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -16,9 +16,7 @@ class _LoginPageState extends State<LoginPage> {
   final _passwordController = TextEditingController();
   bool security = true;
 
-  // 🚀 লগইন ফাংশন
   Future<void> _loginUser() async {
-    // ইমেইল বা পাসওয়ার্ড খালি থাকলে ওয়ার্নিং দেবে
     if (_emailController.text.trim().isEmpty ||
         _passwordController.text.trim().isEmpty) {
       if (!mounted) return;
@@ -29,50 +27,21 @@ class _LoginPageState extends State<LoginPage> {
     }
 
     try {
-      // ১. ফায়ারবেস অথেন্টিকেশনে লগইন করা হচ্ছে
-      UserCredential userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: _emailController.text.trim(),
         password: _passwordController.text.trim(),
       );
 
-      String? uid = userCredential.user?.uid;
-      String? email = userCredential.user?.email;
-
       if (!mounted) return;
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(const SnackBar(content: Text("Login successful!")));
-
-      // ২. স্ক্রিন ব্লাঙ্ক হওয়া আটকাতে ইউজারকে সাথে সাথে হোম পেজে পাঠিয়ে দেওয়া হচ্ছে
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Login successful!")),
+      );
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => const MainNavigationPage()),
       );
 
-      // ৩. ব্যাকগ্রাউন্ডে চেক করা হচ্ছে এই ইউজারের ডাটা ফায়ারস্টোরে আছে কি না
-      if (uid != null && email != null) {
-        FirebaseFirestore.instance.collection('users').doc(uid).get().then((userDoc) async {
-          // যদি ডাটাবেজে এই ইউজারের কোনো প্রোফাইল না থাকে (exists == false)
-          if (!userDoc.exists) {
-            // ইমেইলের @ চিহ্নের আগের অংশটুকু নাম হিসেবে নেওয়া হচ্ছে (যেমন: royb93644)
-            String fallbackName = email.split('@')[0];
-
-            // ফায়ারস্টোরের 'users' কালেকশনে নতুন প্রোফাইল তৈরি করে দেওয়া হচ্ছে
-            await FirebaseFirestore.instance.collection('users').doc(uid).set({
-              'uid': uid,
-              'name': fallbackName,
-              'username': '@$fallbackName',
-              'avatar': fallbackName.isNotEmpty ? fallbackName[0].toUpperCase() : "U",
-              'createdAt': FieldValue.serverTimestamp(),
-            });
-          }
-        }).catchError((error) {
-          debugPrint("Background Firestore Error: $error");
-        });
-      }
-
     } on FirebaseAuthException catch (e) {
-      // ভুল পাসওয়ার্ড বা ইমেইল দিলে এরর হ্যান্ডেলিং
       String errorMessage = "Incorrect email or password.";
       if (e.code == 'user-not-found') {
         errorMessage = 'No user found with this email.';
@@ -83,9 +52,9 @@ class _LoginPageState extends State<LoginPage> {
       }
 
       if (!mounted) return;
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text(errorMessage)));
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(errorMessage)),
+      );
     }
   }
 
@@ -132,7 +101,7 @@ class _LoginPageState extends State<LoginPage> {
                           letterSpacing: 1,
                         ),
                       ),
-                      const SizedBox(height: 10),
+                      SizedBox(height: 10),
                       Text(
                         "Welcome back! You've been missed",
                         style: TextStyle(fontSize: 20, color: Colors.white70),
