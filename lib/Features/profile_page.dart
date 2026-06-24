@@ -52,13 +52,13 @@ class _ProfilePageState extends State<ProfilePage> {
         content: const Text("Are you sure you want to permanently delete your account? This action cannot be undone."),
         actions: [
           TextButton(
-            onPressed: () => Navigator.pop(context), // না চাইলে পপ-আপ বন্ধ হবে
+            onPressed: () => Navigator.pop(context),
             child: const Text("Cancel"),
           ),
           TextButton(
             onPressed: () {
-              Navigator.pop(context); // পপ-আপ বন্ধ হবে
-              deleteUserAccount(); // ডিলিট ফাংশন কল হবে
+              Navigator.pop(context);
+              deleteUserAccount();
             },
             child: const Text(
               "Delete",
