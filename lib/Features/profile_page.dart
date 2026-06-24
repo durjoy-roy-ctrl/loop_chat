@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
-
+import 'package:loop_chat/main.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:loop_chat/Login Screen/signup_page.dart';
+import 'package:loop_chat/Login Screen/login_page.dart';
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
 
@@ -11,11 +14,67 @@ class _ProfilePageState extends State<ProfilePage> {
   bool isDark = false;
   bool about = false;
 
+  Future<void> deleteUserAccount() async {
+    try {
+      await FirebaseAuth.instance.currentUser?.delete();
+
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Account deleted successfully!")),
+      );
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (context) => const SignupPage()),
+            (route) => false,
+      );
+
+    } on FirebaseAuthException catch (e) {
+      if (!mounted) return;
+
+
+      if (e.code == 'requires-recent-login') {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text("Please log in again before deleting your account.")),
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("Error: ${e.message}")),
+        );
+      }
+    }
+  }
+
+  void showDeleteDialog() {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text("Delete Account"),
+        content: const Text("Are you sure you want to permanently delete your account? This action cannot be undone."),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context), // না চাইলে পপ-আপ বন্ধ হবে
+            child: const Text("Cancel"),
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.pop(context); // পপ-আপ বন্ধ হবে
+              deleteUserAccount(); // ডিলিট ফাংশন কল হবে
+            },
+            child: const Text(
+              "Delete",
+              style: TextStyle(color: Colors.redAccent, fontWeight: FontWeight.bold),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        backgroundColor: Color(0xFFF8FAFC),
         appBar: AppBar(
           backgroundColor: Color(0xff1E3A8A),
           toolbarHeight: 80,
@@ -224,10 +283,10 @@ class _ProfilePageState extends State<ProfilePage> {
                               style: TextStyle(fontWeight: FontWeight.w500),
                             ),
                             trailing: Switch(
-                              value: isDark,
+                              value: isAppDarkMode,
                               onChanged: (value) {
-                                setState(() {
-                                  isDark = value;
+                                refreshApp(() {
+                                  isAppDarkMode = value;
                                 });
                               },
                             ),
@@ -247,7 +306,14 @@ class _ProfilePageState extends State<ProfilePage> {
                               size: 16,
                               color: Colors.black,
                             ),
-                            onTap: () {},
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => const LoginPage(),
+                                ),
+                              );
+                            },
                           ),
                           const Divider(height: 1, thickness: 0.5),
                           ListTile(
@@ -264,7 +330,9 @@ class _ProfilePageState extends State<ProfilePage> {
                               size: 16,
                               color: Colors.black,
                             ),
-                            onTap: () {},
+                            onTap: () {
+                              showDeleteDialog();
+                            },
                           ),
                           const Divider(height: 1, thickness: 0.5),
                           ListTile(
@@ -281,7 +349,14 @@ class _ProfilePageState extends State<ProfilePage> {
                               size: 16,
                               color: Colors.black,
                             ),
-                            onTap: () {},
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => const SignupPage(),
+                                ),
+                              );
+                            },
                           ),
                         ],
                       ),
