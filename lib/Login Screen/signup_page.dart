@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:loop_chat/Login%20Screen/login_page.dart';
+import 'package:loop_chat/Login Screen/login_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:loop_chat/Main Navigation Page/main_navigation_page.dart';
 
 class SignupPage extends StatefulWidget {
   const SignupPage({super.key});
@@ -26,35 +26,21 @@ class _SignupPageState extends State<SignupPage> {
     }
 
     try {
-      // ২. অথেন্টিকেশনে ইউজার তৈরি হচ্ছে
-      UserCredential userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
+      await FirebaseAuth.instance.createUserWithEmailAndPassword(
         email: _emailController.text.trim(),
         password: _passwordController.text.trim(),
       );
 
-      String? uid = userCredential.user?.uid;
-
-      if (uid != null) {
-        // 🚀 ৩. এখানে ফায়ারস্টোরে ডাটা অ্যাড করার লজিক বসানো হয়েছে
-        String userName = _nameController.text.trim().isEmpty ? "No Name" : _nameController.text.trim();
-
-        // ইমেইল থেকে প্রথম অংশ নিয়ে একটা ডামি ইউজারনেম তৈরি করা হচ্ছে (যেমন: royb93644)
-        String fallbackUsername = _emailController.text.trim().split('@')[0];
-
-        await FirebaseFirestore.instance.collection('users').doc(uid).set({
-          'uid': uid,
-          'name': userName,
-          'username': '@$fallbackUsername', // ইউজারনেম ফিল্ড
-          'avatar': userName.isNotEmpty ? userName[0].toUpperCase() : "U", // নামের প্রথম অক্ষর অ্যাভাটার
-          'createdAt': FieldValue.serverTimestamp(),
-        });
-      }
-
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Account created successfully! Please sign in.")),
+        const SnackBar(content: Text("Account created successfully!")),
       );
-      Navigator.pop(context);
+
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (context) => const MainNavigationPage()),
+            (route) => false,
+      );
 
     } on FirebaseAuthException catch (e) {
       String errorMessage = "An error occurred. Please try again.";
@@ -72,7 +58,6 @@ class _SignupPageState extends State<SignupPage> {
       );
     }
   }
-
 
   @override
   void dispose() {
